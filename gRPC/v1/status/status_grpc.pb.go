@@ -8,6 +8,7 @@ package status
 
 import (
 	context "context"
+	model "github.com/TheLazarusNetwork/erebrus/model"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -22,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type StatusServiceClient interface {
-	GetStatusGrpc(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Status, error)
+	GetStatusGrpc(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*model.Status, error)
 }
 
 type statusServiceClient struct {
@@ -33,8 +34,8 @@ func NewStatusServiceClient(cc grpc.ClientConnInterface) StatusServiceClient {
 	return &statusServiceClient{cc}
 }
 
-func (c *statusServiceClient) GetStatusGrpc(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Status, error) {
-	out := new(Status)
+func (c *statusServiceClient) GetStatusGrpc(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*model.Status, error) {
+	out := new(model.Status)
 	err := c.cc.Invoke(ctx, "/status.StatusService/GetStatusGrpc", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -46,7 +47,7 @@ func (c *statusServiceClient) GetStatusGrpc(ctx context.Context, in *Empty, opts
 // All implementations must embed UnimplementedStatusServiceServer
 // for forward compatibility
 type StatusServiceServer interface {
-	GetStatusGrpc(context.Context, *Empty) (*Status, error)
+	GetStatusGrpc(context.Context, *Empty) (*model.Status, error)
 	mustEmbedUnimplementedStatusServiceServer()
 }
 
@@ -54,7 +55,7 @@ type StatusServiceServer interface {
 type UnimplementedStatusServiceServer struct {
 }
 
-func (UnimplementedStatusServiceServer) GetStatusGrpc(context.Context, *Empty) (*Status, error) {
+func (UnimplementedStatusServiceServer) GetStatusGrpc(context.Context, *Empty) (*model.Status, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetStatusGrpc not implemented")
 }
 func (UnimplementedStatusServiceServer) mustEmbedUnimplementedStatusServiceServer() {}

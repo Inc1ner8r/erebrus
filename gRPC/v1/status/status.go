@@ -2,24 +2,27 @@ package status
 
 import (
 	"context"
-	"fmt"
+	"errors"
 
 	"github.com/TheLazarusNetwork/erebrus/core"
-	"google.golang.org/protobuf/proto"
+	"github.com/TheLazarusNetwork/erebrus/model"
+	log "github.com/sirupsen/logrus"
 )
 
 type StatusService struct {
 	UnimplementedStatusServiceServer
 }
 
-func (s *StatusService) GetStatusGrpc(ctx context.Context, request *Empty) (*Status, error) {
+func (s *StatusService) GetStatusGrpc(ctx context.Context, request *Empty) (*model.Status, error) {
 	status_data, err := core.GetServerStatus()
 	if err != nil {
-		fmt.Println(err)
-		return nil, err
+		log.WithFields(log.Fields{
+			"err": err,
+		}).Error("Failed to get server status")
+		return nil, errors.New(err.Error())
 	}
 
-	statusProto := &Status{
+	statusProto := &model.Status{
 		Version:             status_data.Version,
 		Hostname:            status_data.Hostname,
 		Domain:              status_data.Domain,
@@ -30,16 +33,18 @@ func (s *StatusService) GetStatusGrpc(ctx context.Context, request *Empty) (*Sta
 		Region:              status_data.Region,
 		VPNPort:             status_data.VPNPort,
 		PublicKey:           status_data.PublicKey,
-		PersistentKeepalive: uint32(status_data.PersistentKeepalive),
+		PersistentKeepalive: status_data.PersistentKeepalive,
 		DNS:                 status_data.DNS,
 	}
-	protobyte, _ := proto.Marshal(statusProto)
-	fmt.Println(protobyte)
-	newMessage := &Status{}
-	fmt.Println(proto.Unmarshal(protobyte, newMessage))
-	fmt.Println(newMessage)
-	return statusProto, nil
 
+	//test fields
+	// protobyte, _ := proto.Marshal(statusProto)
+	// fmt.Println(protobyte)
+	// newMessage := &model.Status{}
+	// fmt.Println(proto.Unmarshal(protobyte, newMessage))
+	// fmt.Println(newMessage)
+
+	return statusProto, nil
 }
 
 //protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative gRPC/v1/status/status.proto
