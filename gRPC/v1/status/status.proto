@@ -1,0 +1,25 @@
+syntax="proto3";
+
+package status;
+option go_package = "github.com/TheLazarusNetwork/erebrus/status;status";
+message Empty{
+
+}
+
+message Status {
+    string Version = 1;
+    string Hostname = 2;
+    string Domain = 3;
+    string PublicIP = 4;
+    string gRPCPort = 5;
+    string PrivateIP = 6;
+    string HttpPort = 7;
+    string Region = 8;
+    string VPNPort = 9;
+    string PublicKey = 10;
+    uint32 PersistentKeepalive = 11;
+    repeated string DNS = 12;
+}
+service StatusService {
+    rpc GetStatusGrpc(Empty) returns (Status);
+}

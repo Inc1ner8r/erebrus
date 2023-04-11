@@ -54,7 +54,7 @@ func init() {
 
 func RungRPCServer() {
 	grpc_server := grpc.Initialize()
-
+	//status.RegisterStatusServiceServer(grpc_server, )
 	port := os.Getenv("GRPC_PORT")
 
 	log.WithFields(util.StandardFields).Info("Starting gRPC Api, Listening on Port :", port)
@@ -72,8 +72,8 @@ func RungRPCServer() {
 		log.Fatal("Faied to create GRPC server!")
 
 	}
+	//res, _ := grpc_server.
 	wg.Done()
-
 }
 
 func main() {
