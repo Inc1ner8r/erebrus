@@ -1,0 +1,17 @@
+syntax="proto3";
+
+package challengeid;
+
+option go_package = "github.com/TheLazarusNetwork/gRPC/v1/authenticate/challengeid;challengeid";
+
+message Empty{
+}
+
+message GetChallengeIdPayload {
+	string Eula=1;
+	string ChallengeId=2;
+}
+
+service challengeidService {
+    rpc GetChallengeId(Empty) returns (GetChallengeIdPayload);
+}

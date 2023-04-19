@@ -1,0 +1,24 @@
+syntax="proto3";
+
+package authenticate;
+
+option go_package = "github.com/TheLazarusNetwork/gRPC/v1/authenticate;authenticate";
+
+message Empty{
+}
+
+message AuthenticateRequest {
+	string ChallengeId=1;
+	string Signature=2;
+}
+
+message AuthenticatePayload {
+    int64 Status=1;
+	bool  Success=2;
+	string Message=3;
+	string Token=4;
+}
+
+service AuthenticateService{
+    rpc Authenticate(AuthenticateRequest) returns (AuthenticatePayload);
+}
