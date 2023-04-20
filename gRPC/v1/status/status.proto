@@ -10,5 +10,5 @@ message Empty{
 }
 
 service StatusService {
-    rpc GetStatus(Empty) returns (model.Status);
+    rpc TestFn(Empty) returns (Empty);
 }
