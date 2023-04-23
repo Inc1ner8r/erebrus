@@ -1,9 +1,10 @@
 package server
 
 import (
-	"github.com/TheLazarusNetwork/erebrus/api/v1/middleware"
 	"net/http"
 	"os"
+
+	"github.com/TheLazarusNetwork/erebrus/api/v1/middleware"
 
 	"github.com/TheLazarusNetwork/erebrus/api/v1/authenticate/paseto"
 	"github.com/TheLazarusNetwork/erebrus/core"

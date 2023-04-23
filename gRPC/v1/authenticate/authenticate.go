@@ -24,23 +24,20 @@ func (as *AuthenticateService) Authenticate(ctx context.Context, request *Authen
 		log.WithFields(log.Fields{
 			"err": err,
 		}).Error("FlowId Not Found")
-		//errResponse := ErrAuthenticate(err.Error())
-		//c.JSON(http.StatusNotFound, errResponse)
-		//return
+		errResponse := ErrAuthenticate(err.Error())
+		return errResponse, err
 	}
 	if err != nil {
 		log.WithFields(log.Fields{
 			"err": err,
 		}).Error("failed to CheckSignature")
-		//errResponse := ErrAuthenticate(err.Error())
-		//c.JSON(http.StatusInternalServerError, errResponse)
-		//
+		errResponse := ErrAuthenticate(err.Error())
+		return errResponse, err
 	}
 	if !isCorrect {
 		fmt.Println(ErrAuthenticate("Forbidden"))
-		//errResponse := ErrAuthenticate("Forbidden")
-		//c.JSON(http.StatusForbidden, errResponse)
-		//return
+		errResponse := ErrAuthenticate(err.Error())
+		return errResponse, err
 	}
 	customClaims := claims.New(walletAddress)
 	pasetoToken, err := auth.GenerateTokenPaseto(customClaims)
@@ -48,9 +45,8 @@ func (as *AuthenticateService) Authenticate(ctx context.Context, request *Authen
 		log.WithFields(log.Fields{
 			"err": err,
 		}).Error("failed to generate token")
-		//errResponse := ErrAuthenticate(err.Error())
-		//c.JSON(http.StatusInternalServerError, errResponse)
-		//return
+		errResponse := ErrAuthenticate(err.Error())
+		return errResponse, err
 	}
 
 	delete(challengeid.Data, request.ChallengeId)
