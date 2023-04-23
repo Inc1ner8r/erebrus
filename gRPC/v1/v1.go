@@ -1,6 +1,8 @@
 package v1
 
 import (
+	"github.com/TheLazarusNetwork/erebrus/gRPC/v1/authenticate"
+	"github.com/TheLazarusNetwork/erebrus/gRPC/v1/authenticate/challengeid"
 	"github.com/TheLazarusNetwork/erebrus/gRPC/v1/authenticate/paseto"
 	"github.com/TheLazarusNetwork/erebrus/gRPC/v1/authenticate/selector"
 	"github.com/TheLazarusNetwork/erebrus/gRPC/v1/client"
@@ -17,6 +19,8 @@ func Initialize() *grpc.Server {
 	ServerService := &server.ServerService{}
 	ClientService := &client.ClientService{}
 	StatusService := &status.StatusService{}
+	AuthenticateService := &authenticate.AuthenticateService{}
+	ChallengeIdService := &challengeid.ChallengeIdService{}
 
 	//creating a new gRPC server
 	grpc_server := grpc.NewServer(
@@ -28,6 +32,8 @@ func Initialize() *grpc.Server {
 	server.RegisterServerServiceServer(grpc_server, ServerService)
 	client.RegisterClientServiceServer(grpc_server, ClientService)
 	status.RegisterStatusServiceServer(grpc_server, StatusService)
+	authenticate.RegisterAuthenticateServiceServer(grpc_server, AuthenticateService)
+	challengeid.RegisterChallengeidServiceServer(grpc_server, ChallengeIdService)
 
 	return grpc_server
 }
